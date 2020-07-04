@@ -17,10 +17,12 @@ import 'bloc/state/AppState.dart';
 class App extends StatelessWidget {
 
     List<Contact> getContacts(BuildContext context) {
-        return context
+        List<Contact> result = context
             .bloc<AppBloc>()
             .state
             .contactList;
+        sort(result);
+        return result;
     }
 
     Set<Favourite> getFavourites(BuildContext context) {
@@ -39,6 +41,7 @@ class App extends StatelessWidget {
             element.contactId ==
                 element1.id));
         });
+        sort(result);
         return result;
     }
 
@@ -58,6 +61,13 @@ class App extends StatelessWidget {
         } on StateError {
             return null;
         }
+    }
+
+    void sort(List<Contact> list) {
+        list.sort((contact1, contact2) {
+            return contact1.name.toLowerCase().compareTo(
+                contact2.name.toLowerCase());
+        });
     }
 
     @override
